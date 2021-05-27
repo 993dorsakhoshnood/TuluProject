@@ -3,9 +3,21 @@ import 'package:tulu_project/constants/colors.dart';
 import 'package:tulu_project/widgets/task_item.dart';
 
 class TaskCard extends StatelessWidget {
+  final String taskName;
+  final String taskLocation;
+  final String taskDate;
+  final String taskStartEndTime;
+  final String timeForTask;
+  TaskCard(
+      {this.taskName,
+      this.taskLocation,
+      this.taskDate,
+      this.taskStartEndTime,
+      this.timeForTask});
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
@@ -17,22 +29,31 @@ class TaskCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('sanitazion'),
+                Text(
+                  taskName,
+                  style: TextStyle(
+                      color: AppColors.darkNavyTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(AppColors.widgetsColor),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
+                        borderRadius: BorderRadius.circular(14.0),
                       ),
                     ),
                   ),
                   onPressed: () {},
-                  child: Text(
-                    'Accepted',
-                    style: TextStyle(
-                      color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Text(
+                      'Accepted',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 )
@@ -59,10 +80,12 @@ class TaskCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TaskItem(
-                  textColor: AppColors.greyTextColor,
-                  description: 'tehran iran',
-                  icon: 'assets/icons/Location_small.png',
+                Expanded(
+                  child: TaskItem(
+                    textColor: AppColors.greyTextColor,
+                    description: taskLocation,
+                    icon: 'assets/icons/Location_small.png',
+                  ),
                 ),
                 CircleAvatar(
                   radius: 22.0,
@@ -81,18 +104,17 @@ class TaskCard extends StatelessWidget {
             ),
             TaskItem(
               textColor: AppColors.greyTextColor,
-              description: 'wed 12 2021',
+              description: taskDate,
               icon: 'assets/icons/Calendar_small.png',
             ),
             TaskItem(
               textColor: AppColors.darkNavyTextColor,
-              description: 'start:12:00  -  23:00',
+              description: 'Start: ' + taskStartEndTime,
               icon: 'assets/icons/Time_small.png',
             ),
             TaskItem(
-              textColor: AppColors.greyTextColor,
-              description: 'start at: 3 hours ',
-            ),
+                textColor: AppColors.greyTextColor,
+                description: 'Time for Task: ' + timeForTask),
           ],
         ),
       ),

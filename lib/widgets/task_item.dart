@@ -10,6 +10,7 @@ class TaskItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           icon != null
               ? Image(
@@ -25,10 +26,12 @@ class TaskItem extends StatelessWidget {
           SizedBox(
             width: 12.0,
           ),
-          Text(
-            description,
-            style: TextStyle(color: textColor),
-          )
+          Expanded(
+            child: Text(
+              description,
+              style: TextStyle(color: textColor),
+            ),
+          ),
         ],
       ),
     );
