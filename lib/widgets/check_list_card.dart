@@ -1,53 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:tulu_project/constants/colors.dart';
 
-import 'check_list_item.dart';
-
 class CheckListCard extends StatelessWidget {
-  final String checkListName;
-  final String title;
-  final String input;
-  final int itemCount;
-  CheckListCard({this.checkListName, this.input, this.title, this.itemCount});
+  final Widget listview;
+  CheckListCard({this.listview});
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-          accentColor: AppColors.darkNavyTextColor,
-          unselectedWidgetColor: AppColors.darkNavyTextColor),
-      child: ListView(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          ExpansionTile(
-            trailing: SizedBox.shrink(),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  checkListName,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.darkNavyTextColor),
-                ),
-                SizedBox(
-                  width: 4.0,
-                ),
-                Icon(
-                  Icons.keyboard_arrow_up,
-                  color: AppColors.darkNavyTextColor,
-                  size: 16,
-                )
-              ],
+          Container(
+            alignment: Alignment.centerLeft,
+            height: 64.0,
+            decoration: BoxDecoration(
+              color: AppColors.widgetsColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0)),
             ),
-            children: [
-              ListTile(
-                title: Text(title),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: Text(
+                'Check List',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 19),
               ),
-              ListTile(
-                title: Text(input),
-              ),
-            ],
-          )
+            ),
+          ),
+          listview
         ],
       ),
     );

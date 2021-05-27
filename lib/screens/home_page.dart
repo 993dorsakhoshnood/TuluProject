@@ -5,8 +5,10 @@ import 'package:tulu_project/constants/colors.dart';
 import 'package:tulu_project/models/task_model.dart';
 import 'package:tulu_project/widgets/app_bar.dart';
 import 'package:tulu_project/widgets/check_list_card.dart';
+import 'package:tulu_project/widgets/check_list_item.dart';
 import 'package:tulu_project/widgets/task_card.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -52,70 +54,49 @@ class _MyHomePageState extends State<MyHomePage> {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (c, i) {
+                    String date =
+                        DateFormat.yMMMMd().format(taskList[i].startTime);
+                    String startTime =
+                        DateFormat.Hm().format(taskList[i].startTime);
+                    String finishedTime =
+                        DateFormat.Hm().format(taskList[i].finishByTime);
+                    final difference = taskList[i]
+                        .finishByTime
+                        .difference(taskList[i].startTime)
+                        .inMinutes;
                     return Column(
                       children: [
                         TaskCard(
                           taskName: taskList[i].taskName.toString(),
                           taskLocation: taskList[i].taskLocation.toString(),
-                          taskDate: taskList[i].startTime.toString(),
-                          taskStartEndTime: taskList[i].startTime.toString() +
-                              '--' +
-                              taskList[i].finishByTime.toString(),
-                          timeForTask: '====',
+                          taskDate: date,
+                          taskStartEndTime: startTime + ' - ' + finishedTime,
+                          timeForTask: difference.toString() + ' minutes',
                         ),
                         SizedBox(
                           height: 8.0,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 64.0,
-                                decoration: BoxDecoration(
-                                  color: AppColors.widgetsColor,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(16.0),
-                                      topRight: Radius.circular(16.0)),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'Check List',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                ),
-                              ),
-                              ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (c, j) {
-                                  return CheckListCard(
-                                    checkListName: taskList[i]
-                                        .checkList[j]
-                                        .name
-                                        .toString(),
-                                    input: taskList[i]
-                                        .checkList[j]
-                                        .items[j]
-                                        .input
-                                        .toString(),
-                                    title: taskList[i]
-                                        .checkList[j]
-                                        .items[j]
-                                        .title
-                                        .toString(),
-                                  );
-                                },
-                                itemCount: taskList[i].checkList.length,
-                              )
-                            ],
+                        CheckListCard(
+                          listview: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (c, j) {
+                              return CheckListItem(
+                                checkListName:
+                                    taskList[i].checkList[j].name.toString(),
+                                input: taskList[i]
+                                    .checkList[j]
+                                    .items[j]
+                                    .input
+                                    .toString(),
+                                title: taskList[i]
+                                    .checkList[j]
+                                    .items[j]
+                                    .title
+                                    .toString(),
+                              );
+                            },
+                            itemCount: taskList[i].checkList.length,
                           ),
                         ),
                         SizedBox(
