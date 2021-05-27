@@ -11,42 +11,42 @@ class CheckListCard extends StatelessWidget {
   CheckListCard({this.checkListName, this.input, this.title, this.itemCount});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    return Theme(
+      data: Theme.of(context).copyWith(
+          accentColor: AppColors.darkNavyTextColor,
+          unselectedWidgetColor: AppColors.darkNavyTextColor),
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            height: 64.0,
-            decoration: BoxDecoration(
-              color: AppColors.widgetsColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16.0),
-                  topRight: Radius.circular(16.0)),
+          ExpansionTile(
+            trailing: SizedBox.shrink(),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  checkListName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: AppColors.darkNavyTextColor),
+                ),
+                SizedBox(
+                  width: 4.0,
+                ),
+                Icon(
+                  Icons.keyboard_arrow_up,
+                  color: AppColors.darkNavyTextColor,
+                  size: 16,
+                )
+              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                'Check List',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+            children: [
+              ListTile(
+                title: Text(title),
               ),
-            ),
-          ),
-          Container(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (c, i) {
-                return CheckListItem(
-                    checkListName: checkListName, title: title, input: input);
-              },
-              itemCount: itemCount,
-            ),
+              ListTile(
+                title: Text(input),
+              ),
+            ],
           )
         ],
       ),

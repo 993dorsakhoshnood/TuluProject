@@ -30,11 +30,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (response.statusCode == 200) {
       Iterable list = json.decode(response.body);
       taskList = list.map((model) => TaskModel.fromJson(model)).toList();
-
       print('-------------' + taskList.toString());
       return taskList;
-
-      // return jsonDecode(response.body);
     } else {
       throw Exception();
     }
@@ -67,28 +64,62 @@ class _MyHomePageState extends State<MyHomePage> {
                           timeForTask: '====',
                         ),
                         SizedBox(
-                          height: 24.0,
+                          height: 8.0,
                         ),
-                        ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (c, j) {
-                            return CheckListCard(
-                              checkListName:
-                                  taskList[i].checkList[j].name.toString(),
-                              input: taskList[i]
-                                  .checkList[j]
-                                  .items[j]
-                                  .input
-                                  .toString(),
-                              title: taskList[i]
-                                  .checkList[j]
-                                  .items[j]
-                                  .title
-                                  .toString(),
-                            );
-                          },
-                          itemCount: taskList[i].checkList.length,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                height: 64.0,
+                                decoration: BoxDecoration(
+                                  color: AppColors.widgetsColor,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(16.0),
+                                      topRight: Radius.circular(16.0)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Check List',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                              ),
+                              ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (c, j) {
+                                  return CheckListCard(
+                                    checkListName: taskList[i]
+                                        .checkList[j]
+                                        .name
+                                        .toString(),
+                                    input: taskList[i]
+                                        .checkList[j]
+                                        .items[j]
+                                        .input
+                                        .toString(),
+                                    title: taskList[i]
+                                        .checkList[j]
+                                        .items[j]
+                                        .title
+                                        .toString(),
+                                  );
+                                },
+                                itemCount: taskList[i].checkList.length,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32.0,
                         )
                       ],
                     );
