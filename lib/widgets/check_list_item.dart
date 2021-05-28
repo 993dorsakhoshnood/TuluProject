@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tulu_project/constants/colors.dart';
 
-
 class CheckListItem extends StatelessWidget {
   final String checkListName;
   final String title;

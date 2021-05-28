@@ -12,8 +12,9 @@ Widget myAppBar() {
     centerTitle: true,
     backgroundColor: Colors.white,
     title: Text(
-      'Task Information',
+      'Task information',
       style: TextStyle(
+        fontSize: 18,
         fontWeight: FontWeight.bold,
         color: AppColors.mainColor,
       ),

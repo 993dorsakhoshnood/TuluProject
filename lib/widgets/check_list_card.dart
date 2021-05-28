@@ -12,7 +12,6 @@ class CheckListCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             alignment: Alignment.centerLeft,

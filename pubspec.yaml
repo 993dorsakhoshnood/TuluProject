@@ -68,7 +68,8 @@ flutter:
         - asset: assets/fonts/AbrilFatface.ttf
     - family: Montserrat
       fonts:
-        - asset: assets/fonts/AbrilFatface.ttf
+        - asset: assets/fonts/Montserrat.ttf
+        
        
   #   - family: Trajan Pro
   #     fonts:
