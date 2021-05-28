@@ -8,4 +8,5 @@ class AppColors {
   static Color greyTextColor = Color(0xff7D889B);
   static Color darkNavyTextColor = Color(0xff001037);
   static Color floatingButtonColor = Color(0xffF5F5F8);
+  static Color yellowColor = Color(0xffF0C453);
 }

@@ -1,53 +1,25 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tulu_project/blocs/task_bloc/task_bloc.dart';
+import 'package:tulu_project/blocs/task_bloc/task_state.dart';
 import 'package:tulu_project/constants/colors.dart';
-import 'package:tulu_project/models/task_model.dart';
 import 'package:tulu_project/widgets/app_bar.dart';
 import 'package:tulu_project/widgets/check_list_card.dart';
 import 'package:tulu_project/widgets/check_list_item.dart';
 import 'package:tulu_project/widgets/task_card.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var taskList = List<TaskModel>();
-
-  Future<List<TaskModel>> fetchAlbum() async {
-    final response =
-        await http.get(Uri.parse('http://papi.wipehero.com/task.json'));
-
-    if (response.statusCode == 200) {
-      Iterable list = json.decode(response.body);
-      taskList = list.map((model) => TaskModel.fromJson(model)).toList();
-      print('-------------' + taskList.toString());
-      return taskList;
-    } else {
-      throw Exception();
-    }
-  }
-
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<TaskBloc>(context).taskGetData();
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: myAppBar(),
-        body: FutureBuilder(
-          future: fetchAlbum(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                  child: CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColors.darkNavyTextColor),
-              ));
-            } else {
+        body: BlocBuilder<TaskBloc, TaskState>(
+          builder: (context, state) {
+            if (state is TaskCompletedState) {
               return Container(
                 padding:
                     const EdgeInsets.only(top: 28.0, left: 12.0, right: 12.0),
@@ -58,26 +30,26 @@ class _MyHomePageState extends State<MyHomePage> {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (c, i) {
-                          String date =
-                              DateFormat.yMMMMd().format(taskList[i].startTime);
-                          String startTime =
-                              DateFormat.Hm().format(taskList[i].startTime);
-                          String finishedTime =
-                              DateFormat.Hm().format(taskList[i].finishByTime);
-                          final difference = taskList[i]
-                              .finishByTime
-                              .difference(taskList[i].startTime)
+                          String date = DateFormat.yMMMMd()
+                              .format(state.taskList[i].startTime);
+                          String startTime = DateFormat.Hm()
+                              .format(state.taskList[i].startTime);
+                          String finishedTime = DateFormat.Hm()
+                              .format(state.taskList[i].finishByTime);
+                          final difference = state.taskList[i].finishByTime
+                              .difference(state.taskList[i].startTime)
                               .inMinutes;
                           return Column(
                             children: [
                               TaskCard(
-                                taskName: taskList[i].taskName.toString(),
+                                taskName: state.taskList[i].taskName.toString(),
                                 taskLocation:
-                                    taskList[i].taskLocation.toString(),
+                                    state.taskList[i].taskLocation.toString(),
                                 taskDate: date,
                                 taskStartEndTime:
                                     startTime + ' - ' + finishedTime,
                                 timeForTask: difference.toString() + ' minutes',
+                                taskStatus:  state.taskList[i].taskStatus,
                               ),
                               SizedBox(
                                 height: 8.0,
@@ -88,23 +60,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                   shrinkWrap: true,
                                   itemBuilder: (c, j) {
                                     return CheckListItem(
-                                      checkListName: taskList[i]
-                                          .checkList[j]
-                                          .name
-                                          .toString(),
-                                      input: taskList[i]
-                                          .checkList[j]
-                                          .items[j]
-                                          .input
-                                          .toString(),
-                                      title: taskList[i]
-                                          .checkList[j]
-                                          .items[j]
-                                          .title
+                                      checkListName: state
+                                          .taskList[i].checkList[j].name
+                                          .toString()
+                                          .split('.')
+                                          .last,
+                                      input: state.taskList[i].checkList[j]
+                                          .items[j].input
+                                          .toString()
+                                          .split('.')
+                                          .last,
+                                      title: state.taskList[i].checkList[j]
+                                          .items[j].title
                                           .toString(),
                                     );
                                   },
-                                  itemCount: taskList[i].checkList.length,
+                                  itemCount: state.taskList[i].checkList.length,
                                 ),
                               ),
                               SizedBox(
@@ -113,12 +84,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             ],
                           );
                         },
-                        itemCount: taskList.length,
+                        itemCount: state.taskList.length,
                       ),
                     ],
                   ),
                 ),
               );
+            }
+            if (state is TaskInProgressState) {
+              return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.darkNavyTextColor),
+                ),
+              );
+            } else {
+              return Center(child: Text('something went wrong'));
             }
           },
         ),

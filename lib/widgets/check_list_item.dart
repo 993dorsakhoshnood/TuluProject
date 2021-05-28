@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tulu_project/constants/colors.dart';
+import 'package:tulu_project/widgets/divider.dart';
 
 class CheckListItem extends StatelessWidget {
   final String checkListName;
@@ -11,13 +12,17 @@ class CheckListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
           accentColor: AppColors.darkNavyTextColor,
           unselectedWidgetColor: AppColors.darkNavyTextColor),
       child: ListView(
+        padding: EdgeInsets.zero,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: [
           ExpansionTile(
+            childrenPadding: EdgeInsets.zero,
+            tilePadding: EdgeInsets.zero,
             trailing: SizedBox.shrink(),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +33,7 @@ class CheckListItem extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.darkNavyTextColor,
-                      fontSize: 14),
+                      fontSize: 13),
                 ),
                 SizedBox(
                   width: 4.0,
@@ -45,16 +50,19 @@ class CheckListItem extends StatelessWidget {
                 title: Text(
                   title,
                   style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 13,
                       color: Color(0xff001037),
                       fontWeight: FontWeight.bold),
                 ),
+              ),
+              TaskDivider(
+                padding: 0,
               ),
               ListTile(
                 title: Text(
                   input,
                   style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 13,
                       color: Color(0xff001037),
                       fontWeight: FontWeight.bold),
                 ),
