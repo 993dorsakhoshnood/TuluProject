@@ -9,7 +9,7 @@ class StatusButton extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: taskStatus == 0
-            ? MaterialStateProperty.all(AppColors.darkNavyTextColor)
+            ? MaterialStateProperty.all(AppColors.widgetsColor)
             : MaterialStateProperty.all(AppColors.yellowColor),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
